@@ -1,0 +1,910 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+assets/
+  expo.icon/
+    Assets/
+      expo-symbol 2.svg
+      grid.png
+    icon.json
+  images/
+    android-icon-background.png
+    android-icon-foreground.png
+    android-icon-monochrome.png
+    favicon.png
+    icon.png
+    splash-icon.png
+src/
+  app/
+    (drawer)/
+      (tabs)/
+        _layout.tsx
+        habits.tsx
+        index.tsx
+        progress.tsx
+      _layout.tsx
+      profile.tsx
+    _layout.tsx
+  components/
+    HabitCard.tsx
+    MenuItem.tsx
+    ProgressCard.tsx
+    ThemedText.tsx
+    ThemedView.tsx
+  contexts/
+    AppContext.tsx
+  data/
+    habits.ts
+  types/
+    habits.ts
+.gitignore
+AGENTS.md
+app.json
+babel.config.js
+eas.json
+global.css
+LICENSE
+metro.config.js
+nativewind-env.d.ts
+package.json
+README.md
+tailwind.config.js
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="assets/expo.icon/Assets/expo-symbol 2.svg">
+<svg width="652" height="606" viewBox="0 0 652 606" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M353.554 0H298.446C273.006 0 249.684 14.6347 237.962 37.9539L4.37994 502.646C-1.04325 513.435 -1.45067 526.178 3.2716 537.313L22.6123 582.918C34.6475 611.297 72.5404 614.156 88.4414 587.885L309.863 222.063C313.34 216.317 319.439 212.826 326 212.826C332.561 212.826 338.659 216.317 342.137 222.063L563.559 587.885C579.46 614.156 617.352 611.297 629.388 582.918L648.728 537.313C653.451 526.178 653.043 513.435 647.62 502.646L414.038 37.9539C402.316 14.6347 378.994 0 353.554 0Z" fill="white"/>
+</svg>
+</file>
+
+<file path="assets/expo.icon/icon.json">
+{
+  "fill" : {
+    "automatic-gradient" : "extended-srgb:0.00000,0.47843,1.00000,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "expo-symbol 2.svg",
+          "name" : "expo-symbol 2",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              1.1008400065293245e-05,
+              -16.046875
+            ]
+          }
+        },
+        {
+          "image-name" : "grid.png",
+          "name" : "grid"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
+</file>
+
+<file path="src/app/(drawer)/(tabs)/_layout.tsx">
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { useHabitos } from "../../../contexts/AppContext";
+
+export default function TabsLayout() {
+  const { modoOscuro } = useHabitos();
+  return (
+    <Tabs screenOptions={{
+      headerShown: false,
+      tabBarActiveTintColor: "#7C3AED",
+      tabBarInactiveTintColor: modoOscuro ? "#94A3B8" : "#64748B",
+      tabBarStyle: { backgroundColor: modoOscuro ? "#111827" : "#FFFFFF", borderTopColor: modoOscuro ? "#374151" : "#E2E8F0", height: 68, paddingBottom: 8, paddingTop: 6 },
+    }}>
+      <Tabs.Screen name="index" options={{ title: "Hoy", tabBarIcon: ({ color, size }) => <Ionicons name="today" size={size} color={typeof color === "string" ? color : "#7C3AED"} /> }} />
+      <Tabs.Screen name="habits" options={{ title: "Hábitos", tabBarIcon: ({ color, size }) => <Ionicons name="checkbox" size={size} color={typeof color === "string" ? color : "#7C3AED"} /> }} />
+      <Tabs.Screen name="progress" options={{ title: "Progreso", tabBarIcon: ({ color, size }) => <Ionicons name="stats-chart" size={size} color={typeof color === "string" ? color : "#7C3AED"} /> }} />
+    </Tabs>
+  );
+}
+</file>
+
+<file path="src/app/(drawer)/(tabs)/habits.tsx">
+import { ScrollView, View } from "react-native";
+import { ThemedView } from "../../../components/ThemedView";
+import { ThemedText } from "../../../components/ThemedText";
+import { HabitCard } from "../../../components/HabitCard";
+import { habits } from "../../../data/habits";
+import { useHabitos } from "../../../contexts/AppContext";
+
+export default function HabitsScreen() {
+  const { progresoDiario, alternarHabito } = useHabitos();
+  return (
+    <ThemedView style={{ flex: 1 }} className="flex-1">
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ThemedText type="muted">Administra tu rutina</ThemedText>
+        <ThemedText type="title" style={{ marginBottom: 20 }}>Hábitos</ThemedText>
+        {habits.map((habit) => (
+          <HabitCard key={habit.id} habit={habit} completed={progresoDiario[habit.id]} onToggle={() => alternarHabito(habit.id)} />
+        ))}
+        <View style={{ marginTop: 8, padding: 16, borderRadius: 16, backgroundColor: "#ECFDF5" }}>
+          <ThemedText type="subtitle" style={{ color: "#166534" }}>Consejo</ThemedText>
+          <ThemedText type="body" style={{ color: "#15803D" }}>La constancia importa más que la perfección. Marca cada logro pequeño.</ThemedText>
+        </View>
+      </ScrollView>
+    </ThemedView>
+  );
+}
+</file>
+
+<file path="src/app/(drawer)/(tabs)/index.tsx">
+import { ScrollView, Pressable, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { ThemedView } from "../../../components/ThemedView";
+import { ThemedText } from "../../../components/ThemedText";
+import { ProgressCard } from "../../../components/ProgressCard";
+import { HabitCard } from "../../../components/HabitCard";
+import { habits } from "../../../data/habits";
+import { useHabitos } from "../../../contexts/AppContext";
+
+export default function TodayScreen() {
+  const { diaActual, cambiarDia, progresoDiario, alternarHabito, modoOscuro } = useHabitos();
+  return (
+    <ThemedView style={{ flex: 1 }} className="flex-1">
+      <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 36 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <View>
+            <ThemedText type="muted">Reto de 21 días</ThemedText>
+            <ThemedText type="title">¡Buenos días!</ThemedText>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: modoOscuro ? "#1F2937" : "#FFFFFF", borderRadius: 14, padding: 6 }}>
+            <Pressable hitSlop={8} onPress={() => cambiarDia(Math.max(1, diaActual - 1))}><Ionicons name="chevron-back" size={20} color="#7C3AED" /></Pressable>
+            <ThemedText type="subtitle" style={{ marginHorizontal: 8 }}>Día {diaActual}</ThemedText>
+            <Pressable hitSlop={8} onPress={() => cambiarDia(Math.min(21, diaActual + 1))}><Ionicons name="chevron-forward" size={20} color="#7C3AED" /></Pressable>
+          </View>
+        </View>
+        <ProgressCard />
+        <ThemedText type="subtitle" style={{ marginTop: 24, marginBottom: 12 }}>Mis hábitos de hoy</ThemedText>
+        {habits.map((habit) => (
+          <HabitCard key={habit.id} habit={habit} completed={progresoDiario[habit.id]} onToggle={() => alternarHabito(habit.id)} />
+        ))}
+      </ScrollView>
+    </ThemedView>
+  );
+}
+</file>
+
+<file path="src/app/(drawer)/(tabs)/progress.tsx">
+import { ScrollView, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { ThemedView } from "../../../components/ThemedView";
+import { ThemedText } from "../../../components/ThemedText";
+import { ProgressCard } from "../../../components/ProgressCard";
+import { useHabitos } from "../../../contexts/AppContext";
+
+export default function ProgressScreen() {
+  const { diaActual, modoOscuro, porcentajeCompletado } = useHabitos();
+  return (
+    <ThemedView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ThemedText type="muted">Tu evolución</ThemedText>
+        <ThemedText type="title" style={{ marginBottom: 20 }}>Progreso</ThemedText>
+        <ProgressCard />
+        <View style={{ marginTop: 20, flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+          {[1, 2, 3, 4, 5, 6, 7].map((item) => (
+            <View key={item} style={{ width: "13%", aspectRatio: 1, borderRadius: 12, marginBottom: 10, alignItems: "center", justifyContent: "center",
+              backgroundColor: item <= diaActual && item <= 7 ? "#7C3AED" : modoOscuro ? "#374151" : "#E2E8F0" }}>
+              {item <= diaActual ? <Ionicons name="checkmark" size={18} color="#FFFFFF" /> : <ThemedText type="muted">{item}</ThemedText>}
+            </View>
+          ))}
+        </View>
+        <View style={{ marginTop: 12, borderRadius: 18, padding: 18, backgroundColor: modoOscuro ? "#1F2937" : "#FFFFFF", borderWidth: 1, borderColor: modoOscuro ? "#374151" : "#E2E8F0" }}>
+          <ThemedText type="subtitle">Resumen actual</ThemedText>
+          <ThemedText type="body" style={{ marginTop: 6 }}>Día {diaActual} de 21 · {porcentajeCompletado}% completado hoy</ThemedText>
+        </View>
+      </ScrollView>
+    </ThemedView>
+  );
+}
+</file>
+
+<file path="src/app/(drawer)/_layout.tsx">
+import { Drawer } from "expo-router/drawer";
+import { Ionicons } from "@expo/vector-icons";
+import { useHabitos } from "../../contexts/AppContext";
+
+export default function DrawerLayout() {
+  const { modoOscuro } = useHabitos();
+  return (
+    <Drawer screenOptions={{
+      headerShown: true,
+      headerTintColor: modoOscuro ? "#F8FAFC" : "#312E81",
+      headerStyle: { backgroundColor: modoOscuro ? "#111827" : "#FFFFFF" },
+      drawerStyle: { backgroundColor: modoOscuro ? "#111827" : "#FFFFFF", width: 280 },
+      drawerActiveTintColor: "#7C3AED",
+      drawerInactiveTintColor: modoOscuro ? "#CBD5E1" : "#64748B",
+    }}>
+      <Drawer.Screen name="(tabs)" options={{ title: "Inicio", drawerIcon: ({ color, size }) => <Ionicons name="home" size={size} color={typeof color === "string" ? color : "#7C3AED"} /> }} />
+      <Drawer.Screen name="profile" options={{ title: "Perfil y ajustes", drawerIcon: ({ color, size }) => <Ionicons name="person" size={size} color={typeof color === "string" ? color : "#7C3AED"} /> }} />
+    </Drawer>
+  );
+}
+</file>
+
+<file path="src/app/(drawer)/profile.tsx">
+import { ScrollView, View, Switch, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { ThemedView } from "../../components/ThemedView";
+import { ThemedText } from "../../components/ThemedText";
+import { MenuItem } from "../../components/MenuItem";
+import { useHabitos } from "../../contexts/AppContext";
+
+export default function ProfileScreen() {
+  const { modoOscuro, alternarTema, reiniciarProgreso, diaActual } = useHabitos();
+  return (
+    <ThemedView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <View style={{ alignItems: "center", marginVertical: 18 }}>
+          <View style={{ width: 88, height: 88, borderRadius: 44, alignItems: "center", justifyContent: "center", backgroundColor: "#7C3AED" }}>
+            <Ionicons name="person" size={44} color="#FFFFFF" />
+          </View>
+          <ThemedText type="title" style={{ marginTop: 10 }}>Mi perfil</ThemedText>
+          <ThemedText type="muted">Día {diaActual} del reto</ThemedText>
+        </View>
+        <View style={{ borderRadius: 18, paddingHorizontal: 16, backgroundColor: modoOscuro ? "#1F2937" : "#FFFFFF" }}>
+          <MenuItem icon="moon" label="Modo oscuro" rightLabel={modoOscuro ? "Activo" : "Inactivo"} onPress={alternarTema} />
+          <View style={{ position: "absolute", right: 44, top: 17 }}><Switch value={modoOscuro} onValueChange={alternarTema} trackColor={{ false: "#CBD5E1", true: "#A78BFA" }} /></View>
+          <MenuItem icon="refresh" label="Reiniciar hábitos" onPress={reiniciarProgreso} />
+          <MenuItem icon="information-circle" label="Acerca del reto" onPress={() => {}} />
+        </View>
+        <Pressable onPress={alternarTema} style={{ marginTop: 20, alignItems: "center", borderRadius: 16, paddingVertical: 14, backgroundColor: "#7C3AED" }}>
+          <ThemedText type="subtitle" style={{ color: "#FFFFFF" }}>Cambiar tema</ThemedText>
+        </Pressable>
+      </ScrollView>
+    </ThemedView>
+  );
+}
+</file>
+
+<file path="src/app/_layout.tsx">
+import "react-native-gesture-handler";
+import "../../global.css";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { AppProvider, useHabitos } from "../contexts/AppContext";
+
+function Navigation() {
+  const { modoOscuro } = useHabitos();
+  return (
+    <>
+      <StatusBar style={modoOscuro ? "light" : "dark"} />
+      <Stack screenOptions={{ headerShown: false }} />
+    </>
+  );
+}
+
+export default function RootLayout() {
+  return <AppProvider><Navigation /></AppProvider>;
+}
+</file>
+
+<file path="src/components/HabitCard.tsx">
+import { Pressable, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import type { Habit } from "../types/habits";
+import { useHabitos } from "../contexts/AppContext";
+import { ThemedText } from "./ThemedText";
+
+interface HabitCardProps {
+  habit: Habit;
+  completed: boolean;
+  onToggle: () => void;
+}
+
+export function HabitCard({ habit, completed, onToggle }: HabitCardProps) {
+  const { modoOscuro } = useHabitos();
+  return (
+    <Pressable onPress={onToggle} accessibilityRole="checkbox" accessibilityState={{ checked: completed }}
+      style={{ flexDirection: "row", alignItems: "center", borderRadius: 18, padding: 16, marginBottom: 12,
+        backgroundColor: modoOscuro ? "#1F2937" : "#FFFFFF", borderWidth: 1, borderColor: completed ? habit.color : modoOscuro ? "#374151" : "#E2E8F0" }}>
+      <View style={{ width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: `${habit.color}20` }}>
+        <Ionicons name={habit.icon} size={24} color={habit.color} />
+      </View>
+      <View style={{ flex: 1, marginHorizontal: 12 }}>
+        <ThemedText type="subtitle">{habit.title}</ThemedText>
+        <ThemedText type="muted">{habit.description}</ThemedText>
+      </View>
+      <View style={{ width: 30, height: 30, borderRadius: 15, borderWidth: 2, borderColor: completed ? habit.color : "#94A3B8",
+        backgroundColor: completed ? habit.color : "transparent", alignItems: "center", justifyContent: "center" }}>
+        {completed && <Ionicons name="checkmark" size={18} color="#FFFFFF" />}
+      </View>
+    </Pressable>
+  );
+}
+</file>
+
+<file path="src/components/MenuItem.tsx">
+import { Pressable, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useHabitos } from "../contexts/AppContext";
+import { ThemedText } from "./ThemedText";
+
+interface MenuItemProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  onPress: () => void;
+  rightLabel?: string;
+}
+
+export function MenuItem({ icon, label, onPress, rightLabel }: MenuItemProps) {
+  const { modoOscuro } = useHabitos();
+  return (
+    <Pressable onPress={onPress} style={{ flexDirection: "row", alignItems: "center", paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: modoOscuro ? "#374151" : "#E2E8F0" }}>
+      <View style={{ width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: modoOscuro ? "#374151" : "#EEF2FF" }}>
+        <Ionicons name={icon} size={20} color={modoOscuro ? "#C4B5FD" : "#6366F1"} />
+      </View>
+      <ThemedText type="subtitle" style={{ flex: 1, marginHorizontal: 12 }}>{label}</ThemedText>
+      {rightLabel && <ThemedText type="muted" style={{ marginRight: 8 }}>{rightLabel}</ThemedText>}
+      <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
+    </Pressable>
+  );
+}
+</file>
+
+<file path="src/components/ProgressCard.tsx">
+import { View } from "react-native";
+import { useHabitos } from "../contexts/AppContext";
+import { habits } from "../data/habits";
+import { ThemedText } from "./ThemedText";
+
+export function ProgressCard() {
+  const { porcentajeCompletado, habitosCompletados, modoOscuro } = useHabitos();
+  return (
+    <View style={{ borderRadius: 22, padding: 20, backgroundColor: modoOscuro ? "#312E81" : "#EDE9FE" }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View><ThemedText type="subtitle">Progreso de hoy</ThemedText><ThemedText type="muted">{habitosCompletados} de {habits.length} hábitos completados</ThemedText></View>
+        <ThemedText type="title">{porcentajeCompletado}%</ThemedText>
+      </View>
+      <View style={{ height: 10, borderRadius: 5, marginTop: 16, backgroundColor: modoOscuro ? "#4C1D95" : "#DDD6FE", overflow: "hidden" }}>
+        <View style={{ width: `${porcentajeCompletado}%`, height: "100%", borderRadius: 5, backgroundColor: "#7C3AED" }} />
+      </View>
+    </View>
+  );
+}
+</file>
+
+<file path="src/components/ThemedText.tsx">
+import { Text, type TextProps, type TextStyle } from "react-native";
+import { useHabitos } from "../contexts/AppContext";
+
+interface ThemedTextProps extends TextProps {
+  type?: "title" | "subtitle" | "body" | "muted";
+  style?: TextStyle;
+}
+
+export function ThemedText({ type = "body", style, ...props }: ThemedTextProps) {
+  const { modoOscuro } = useHabitos();
+  const colors = {
+    title: modoOscuro ? "#F8FAFC" : "#0F172A",
+    subtitle: modoOscuro ? "#E2E8F0" : "#334155",
+    body: modoOscuro ? "#CBD5E1" : "#475569",
+    muted: modoOscuro ? "#94A3B8" : "#64748B",
+  };
+  const sizes = { title: 28, subtitle: 18, body: 16, muted: 14 };
+  return <Text {...props} style={[{ color: colors[type], fontSize: sizes[type], fontWeight: type === "title" ? "800" : type === "subtitle" ? "700" : "500" }, style]} />;
+}
+</file>
+
+<file path="src/components/ThemedView.tsx">
+import type { PropsWithChildren } from "react";
+import { View, type ViewProps } from "react-native";
+import { useHabitos } from "../contexts/AppContext";
+
+export function ThemedView({ children, style, ...props }: PropsWithChildren<ViewProps>) {
+  const { modoOscuro } = useHabitos();
+  return <View {...props} style={[{ backgroundColor: modoOscuro ? "#111827" : "#F8FAFC" }, style]}>{children}</View>;
+}
+</file>
+
+<file path="src/contexts/AppContext.tsx">
+import React, { createContext, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
+import { useColorScheme } from "react-native";
+import { habits } from "../data/habits";
+import type { DailyProgress, HabitId } from "../types/habits";
+
+type ModoTema = "light" | "dark";
+interface ValorContextoHabitos {
+  modoOscuro: boolean;
+  modoTema: ModoTema;
+  alternarTema: () => void;
+  progresoDiario: DailyProgress;
+  alternarHabito: (id: HabitId) => void;
+  reiniciarProgreso: () => void;
+  habitosCompletados: number;
+  porcentajeCompletado: number;
+  diaActual: number;
+  cambiarDia: (dia: number) => void;
+}
+
+const ContextoHabitos = createContext<ValorContextoHabitos | null>(null);
+const progresoInicial = (): DailyProgress => ({ study: false, read: false, exercise: false, water: false });
+
+export function AppProvider({ children }: PropsWithChildren) {
+  const temaDelSistema = useColorScheme();
+  const [modoTema, cambiarModoTema] = useState<ModoTema>("light");
+  const [progresoDiario, actualizarProgreso] = useState<DailyProgress>(progresoInicial);
+  const [diaActual, cambiarDiaActual] = useState(1);
+
+  useEffect(() => {
+    cambiarModoTema(temaDelSistema === "dark" ? "dark" : "light");
+  }, [temaDelSistema]);
+
+  const alternarHabito = (id: HabitId) => actualizarProgreso((progresoActual) => ({ ...progresoActual, [id]: !progresoActual[id] }));
+  const reiniciarProgreso = () => actualizarProgreso(progresoInicial());
+  const habitosCompletados = Object.values(progresoDiario).filter(Boolean).length;
+  const porcentajeCompletado = Math.round((habitosCompletados / habits.length) * 100);
+
+  const valor = useMemo<ValorContextoHabitos>(() => ({
+    modoOscuro: modoTema === "dark",
+    modoTema,
+    alternarTema: () => cambiarModoTema((modoActual) => modoActual === "dark" ? "light" : "dark"),
+    progresoDiario,
+    alternarHabito,
+    reiniciarProgreso,
+    habitosCompletados,
+    porcentajeCompletado,
+    diaActual,
+    cambiarDia: cambiarDiaActual,
+  }), [modoTema, progresoDiario, habitosCompletados, porcentajeCompletado, diaActual]);
+
+  return <ContextoHabitos.Provider value={valor}>{children}</ContextoHabitos.Provider>;
+}
+
+export function useHabitos(): ValorContextoHabitos {
+  const contexto = useContext(ContextoHabitos);
+  if (!contexto) throw new Error("useHabitos debe usarse dentro de AppProvider");
+  return contexto;
+}
+</file>
+
+<file path="src/data/habits.ts">
+import type { Habit } from "../types/habits";
+
+export const habits: Habit[] = [
+  { id: "study", title: "Ver el código", description: "30 minutos de práctica", icon: "school", color: "#7C3AED" },
+  { id: "read", title: "Leer un libro", description: "Avanza en tu lectura", icon: "book", color: "#2563EB" },
+  { id: "exercise", title: "Ejercicio físico", description: "Muévete al menos 20 minutos", icon: "barbell", color: "#F97316" },
+  { id: "water", title: "Beber agua", description: "Mantén la hidratación", icon: "water", color: "#0891B2" },
+];
+</file>
+
+<file path="src/types/habits.ts">
+export type HabitId = "study" | "read" | "exercise" | "water";
+
+export interface Habit {
+  id: HabitId;
+  title: string;
+  description: string;
+  icon: "book" | "water" | "barbell" | "school";
+  color: string;
+}
+
+export type DailyProgress = Record<HabitId, boolean>;
+</file>
+
+<file path=".gitignore">
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+example
+
+# generated native folders
+/ios
+/android
+</file>
+
+<file path="AGENTS.md">
+This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+
+## Expo has changed — do not trust your training data
+
+Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+
+1. Read the major version of the `expo` package in `package.json`.
+2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
+3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+
+## Commands
+
+Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
+
+```bash
+npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
+npx expo start              # start the dev server
+npx expo lint               # lint
+npx tsc --noEmit            # typecheck
+npx expo-doctor             # diagnose dependency and config issues
+npx expo install --fix      # fix incompatible package versions
+```
+
+Run lint and typecheck before declaring any task done.
+
+## Navigation & Routing
+
+- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
+- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
+- Docs: https://docs.expo.dev/router/introduction.md
+
+## Building with EAS
+
+Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
+Docs: https://docs.expo.dev/eas/index.md
+
+## Rules
+
+- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
+- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
+- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+</file>
+
+<file path="app.json">
+{
+  "expo": {
+    "name": "Reto 21 dias",
+    "slug": "reto-21-dias",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "21dias",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "icon": "./assets/expo.icon"
+    },
+    "android": {
+      "package": "com.reto21dias.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#208AEF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 76
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "31016593-5c02-472d-8057-7db9f143ef1e"
+      }
+    },
+    "owner": "danixxp"
+  }
+}
+</file>
+
+<file path="babel.config.js">
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+  };
+};
+</file>
+
+<file path="eas.json">
+{
+  "cli": { "version": ">= 16.0.0", "appVersionSource": "remote" },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" }
+    },
+    "production": { "android": { "buildType": "app-bundle" } }
+  }
+}
+</file>
+
+<file path="global.css">
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</file>
+
+<file path="LICENSE">
+The MIT License (MIT)
+
+Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</file>
+
+<file path="metro.config.js">
+const { getDefaultConfig } = require("expo/metro-config");
+const { withNativeWind } = require("nativewind/metro");
+
+const config = getDefaultConfig(__dirname);
+
+module.exports = withNativeWind(config, { input: "./global.css" });
+</file>
+
+<file path="nativewind-env.d.ts">
+/// <reference types="nativewind/types" />
+
+// NOTE: This file should not be edited and should be committed with your source code. It is generated by NativeWind.
+</file>
+
+<file path="package.json">
+{
+  "name": "21dias",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@expo/ui": "~58.0.29",
+    "@expo/vector-icons": "^15.1.1",
+    "@react-navigation/drawer": "^7.14.5",
+    "expo": "~58.0.26",
+    "expo-constants": "~58.0.16",
+    "expo-device": "~58.0.5",
+    "expo-font": "~58.0.12",
+    "expo-glass-effect": "~58.0.5",
+    "expo-image": "~58.0.18",
+    "expo-linking": "~58.0.17",
+    "expo-router": "~58.0.32",
+    "expo-splash-screen": "~58.0.14",
+    "expo-status-bar": "~58.0.5",
+    "expo-symbols": "~58.0.5",
+    "expo-system-ui": "~58.0.7",
+    "expo-web-browser": "~58.1.0",
+    "nativewind": "^4.2.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-gesture-handler": "~3.3.0",
+    "react-native-reanimated": "4.7.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-screens": "~4.30.1",
+    "react-native-web": "~0.21.4",
+    "react-native-worklets": "0.13.0",
+    "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "babel-preset-expo": "^58.0.26",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "expo lint"
+  },
+  "private": true
+}
+</file>
+
+<file path="README.md">
+# Reto 21 días
+
+Aplicación móvil con React Native y Expo para registrar hábitos diarios durante un reto de 21 días.
+
+## Funcionalidades
+
+- Inicio/Hoy con progreso diario y navegación entre días.
+- Hábitos predefinidos con marcado y desmarcado.
+- Pantalla de progreso con resumen visual.
+- Perfil y ajustes con modo claro/oscuro.
+- Navegación con Stack, Drawer y Tabs.
+- Datos locales tipados en TypeScript.
+
+## Instalación
+
+```bash
+pnpm install
+pnpm start
+```
+
+Para Android: `pnpm android`.
+
+## Arquitectura
+
+- `src/app`: rutas de Expo Router y layouts de Stack, Drawer y Tabs.
+- `src/contexts/AppContext.tsx`: custom hook `useHabits`.
+- `src/data/habits.ts`: hábitos predefinidos.
+- `src/types/habits.ts`: modelos TypeScript.
+- `src/components`: componentes reutilizables tipados.
+- `global.css` y `tailwind.config.js`: configuración de NativeWind.
+
+## Generar APK
+
+El perfil `preview` de `eas.json` configura un APK Android instalable:
+
+```bash
+npx eas-cli login
+npx eas-cli build:configure
+npx eas-cli build -p android --profile preview
+```
+
+Una vez finalizado, añadir el enlace público del APK o su código QR en esta sección.
+
+## Evidencias
+
+Añadir capturas de Inicio, Hábitos, Progreso y Ajustes, y registrar el enlace del screencast técnico de máximo cuatro minutos.
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#7C3AED",
+        background: "#F8FAFC",
+      },
+    },
+  },
+  plugins: [],
+};
+</file>
+
+<file path="tsconfig.json">
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/assets/*": [
+        "./assets/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+  ],
+  "exclude": [
+    "example",
+    "node_modules"
+  ]
+}
+</file>
+
+</files>
