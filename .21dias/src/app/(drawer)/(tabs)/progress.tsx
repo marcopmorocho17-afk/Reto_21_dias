@@ -1,29 +1,31 @@
 import { ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "../../../components/ThemedView";
-import { ThemedText } from "../../../components/ThemedText";
-import { ProgressCard } from "../../../components/ProgressCard";
-import { useHabits } from "../../../contexts/AppContext";
+import { ThemedView } from "../../../frontend/components/ThemedView";
+import { ThemedText } from "../../../frontend/components/ThemedText";
+import { ProgressCard } from "../../../frontend/components/ProgressCard";
+import { useHabitos } from "../../../frontend/contexts/AppContext";
+import { coloresTema, estilosPantallas, paleta } from "../../../frontend/styles/tema";
 
 export default function ProgressScreen() {
-  const { day, isDark, percentage } = useHabits();
+  const { diaActual, modoOscuro, porcentajeCompletado } = useHabitos();
+  const colores = coloresTema(modoOscuro);
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+    <ThemedView style={estilosPantallas.raiz}>
+      <ScrollView contentContainerStyle={estilosPantallas.scroll}>
         <ThemedText type="muted">Tu evolución</ThemedText>
-        <ThemedText type="title" style={{ marginBottom: 20 }}>Progreso</ThemedText>
+        <ThemedText type="title" style={estilosPantallas.tituloEspaciado}>Progreso</ThemedText>
         <ProgressCard />
-        <View style={{ marginTop: 20, flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between" }}>
+        <View style={estilosPantallas.calendario}>
           {[1, 2, 3, 4, 5, 6, 7].map((item) => (
-            <View key={item} style={{ width: "13%", aspectRatio: 1, borderRadius: 12, marginBottom: 10, alignItems: "center", justifyContent: "center",
-              backgroundColor: item <= day && item <= 7 ? "#7C3AED" : isDark ? "#374151" : "#E2E8F0" }}>
-              {item <= day ? <Ionicons name="checkmark" size={18} color="#FFFFFF" /> : <ThemedText type="muted">{item}</ThemedText>}
+            <View key={item} style={[estilosPantallas.diaCalendario,
+              { backgroundColor: item <= diaActual && item <= 7 ? paleta.violeta : modoOscuro ? colores.borde : paleta.bordeClaro }] }>
+              {item <= diaActual ? <Ionicons name="checkmark" size={18} color={paleta.blanco} /> : <ThemedText type="muted">{item}</ThemedText>}
             </View>
           ))}
         </View>
-        <View style={{ marginTop: 12, borderRadius: 18, padding: 18, backgroundColor: isDark ? "#1F2937" : "#FFFFFF", borderWidth: 1, borderColor: isDark ? "#374151" : "#E2E8F0" }}>
+        <View style={[estilosPantallas.resumen, { backgroundColor: colores.superficie, borderColor: colores.borde }]}>
           <ThemedText type="subtitle">Resumen actual</ThemedText>
-          <ThemedText type="body" style={{ marginTop: 6 }}>Día {day} de 21 · {percentage}% completado hoy</ThemedText>
+          <ThemedText type="body" style={estilosPantallas.textoResumen}>Día {diaActual} de 21 · {porcentajeCompletado}% completado hoy</ThemedText>
         </View>
       </ScrollView>
     </ThemedView>

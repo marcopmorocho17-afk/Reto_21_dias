@@ -22,11 +22,11 @@ Para Android: `pnpm android`.
 
 ## Arquitectura
 
+- `src/backend/habitos.ts`: datos, tipos y operaciones de hábitos.
+- `src/frontend/contexts/AppContext.tsx`: estado React compartido y temas.
+- `src/frontend/components`: componentes visuales reutilizables.
+- `src/frontend/styles/tema.ts`: tema, estilos y opciones de navegación.
 - `src/app`: rutas de Expo Router y layouts de Stack, Drawer y Tabs.
-- `src/contexts/AppContext.tsx`: custom hook `useHabits`.
-- `src/data/habits.ts`: hábitos predefinidos.
-- `src/types/habits.ts`: modelos TypeScript.
-- `src/components`: componentes reutilizables tipados.
 - `global.css` y `tailwind.config.js`: configuración de NativeWind.
 
 ## Generar APK

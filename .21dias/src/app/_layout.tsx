@@ -2,13 +2,13 @@ import "react-native-gesture-handler";
 import "../../global.css";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { AppProvider, useHabits } from "../contexts/AppContext";
+import { AppProvider, useHabitos } from "../frontend/contexts/AppContext";
 
 function Navigation() {
-  const { isDark } = useHabits();
+  const { modoOscuro } = useHabitos();
   return (
     <>
-      <StatusBar style={isDark ? "light" : "dark"} />
+      <StatusBar style={modoOscuro ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }} />
     </>
   );

@@ -1,31 +1,30 @@
-import { ScrollView, View, Switch, Pressable } from "react-native";
+import { ScrollView, View, Switch } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedView } from "../../components/ThemedView";
-import { ThemedText } from "../../components/ThemedText";
-import { MenuItem } from "../../components/MenuItem";
-import { useHabits } from "../../contexts/AppContext";
+import { ThemedView } from "../../frontend/components/ThemedView";
+import { ThemedText } from "../../frontend/components/ThemedText";
+import { MenuItem } from "../../frontend/components/MenuItem";
+import { useHabitos } from "../../frontend/contexts/AppContext";
+import { coloresTema, estilosPantallas, paleta } from "../../frontend/styles/tema";
 
 export default function ProfileScreen() {
-  const { isDark, toggleTheme, resetProgress, day } = useHabits();
+  const { modoOscuro, alternarTema, reiniciarProgreso, diaActual } = useHabitos();
+  const colores = coloresTema(modoOscuro);
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <View style={{ alignItems: "center", marginVertical: 18 }}>
-          <View style={{ width: 88, height: 88, borderRadius: 44, alignItems: "center", justifyContent: "center", backgroundColor: "#7C3AED" }}>
-            <Ionicons name="person" size={44} color="#FFFFFF" />
+    <ThemedView style={estilosPantallas.raiz}>
+      <ScrollView contentContainerStyle={estilosPantallas.scroll}>
+        <View style={estilosPantallas.perfilCentro}>
+          <View style={[estilosPantallas.avatar, { backgroundColor: paleta.violeta }]}>
+            <Ionicons name="person" size={44} color={paleta.blanco} />
           </View>
-          <ThemedText type="title" style={{ marginTop: 10 }}>Mi perfil</ThemedText>
-          <ThemedText type="muted">Día {day} del reto</ThemedText>
+          <ThemedText type="title" style={estilosPantallas.nombrePerfil}>Mi perfil</ThemedText>
+          <ThemedText type="muted">Día {diaActual} del reto</ThemedText>
         </View>
-        <View style={{ borderRadius: 18, paddingHorizontal: 16, backgroundColor: isDark ? "#1F2937" : "#FFFFFF" }}>
-          <MenuItem icon="moon" label="Modo oscuro" rightLabel={isDark ? "Activo" : "Inactivo"} onPress={toggleTheme} />
-          <View style={{ position: "absolute", right: 44, top: 17 }}><Switch value={isDark} onValueChange={toggleTheme} trackColor={{ false: "#CBD5E1", true: "#A78BFA" }} /></View>
-          <MenuItem icon="refresh" label="Reiniciar hábitos" onPress={resetProgress} />
+        <View style={[estilosPantallas.panelPerfil, { backgroundColor: colores.superficie }]}>
+          <MenuItem icon="moon" label="Modo oscuro" rightLabel={modoOscuro ? "Activo" : "Inactivo"} onPress={alternarTema} />
+          <View style={estilosPantallas.interruptor}><Switch value={modoOscuro} onValueChange={alternarTema} trackColor={{ false: paleta.textoTenue, true: paleta.violetaClaro }} /></View>
+          <MenuItem icon="refresh" label="Reiniciar hábitos" onPress={reiniciarProgreso} />
           <MenuItem icon="information-circle" label="Acerca del reto" onPress={() => {}} />
         </View>
-        <Pressable onPress={toggleTheme} style={{ marginTop: 20, alignItems: "center", borderRadius: 16, paddingVertical: 14, backgroundColor: "#7C3AED" }}>
-          <ThemedText type="subtitle" style={{ color: "#FFFFFF" }}>Cambiar tema</ThemedText>
-        </Pressable>
       </ScrollView>
     </ThemedView>
   );

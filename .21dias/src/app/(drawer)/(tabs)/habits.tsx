@@ -1,23 +1,24 @@
 import { ScrollView, View } from "react-native";
-import { ThemedView } from "../../../components/ThemedView";
-import { ThemedText } from "../../../components/ThemedText";
-import { HabitCard } from "../../../components/HabitCard";
-import { habits } from "../../../data/habits";
-import { useHabits } from "../../../contexts/AppContext";
+import { ThemedView } from "../../../frontend/components/ThemedView";
+import { ThemedText } from "../../../frontend/components/ThemedText";
+import { HabitCard } from "../../../frontend/components/HabitCard";
+import { listaHabitos } from "../../../backend/habitos";
+import { useHabitos } from "../../../frontend/contexts/AppContext";
+import { estilosPantallas } from "../../../frontend/styles/tema";
 
 export default function HabitsScreen() {
-  const { progress, toggleHabit } = useHabits();
+  const { progresoDiario, alternarHabito } = useHabitos();
   return (
-    <ThemedView style={{ flex: 1 }} className="flex-1">
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
+    <ThemedView style={estilosPantallas.raiz} className="flex-1">
+      <ScrollView contentContainerStyle={estilosPantallas.scroll}>
         <ThemedText type="muted">Administra tu rutina</ThemedText>
-        <ThemedText type="title" style={{ marginBottom: 20 }}>Hábitos</ThemedText>
-        {habits.map((habit) => (
-          <HabitCard key={habit.id} habit={habit} completed={progress[habit.id]} onToggle={() => toggleHabit(habit.id)} />
+        <ThemedText type="title" style={estilosPantallas.tituloEspaciado}>Hábitos</ThemedText>
+        {listaHabitos.map((habit) => (
+          <HabitCard key={habit.id} habit={habit} completed={progresoDiario[habit.id]} onToggle={() => alternarHabito(habit.id)} />
         ))}
-        <View style={{ marginTop: 8, padding: 16, borderRadius: 16, backgroundColor: "#ECFDF5" }}>
-          <ThemedText type="subtitle" style={{ color: "#166534" }}>Consejo</ThemedText>
-          <ThemedText type="body" style={{ color: "#15803D" }}>La constancia importa más que la perfección. Marca cada logro pequeño.</ThemedText>
+        <View style={estilosPantallas.consejo}>
+          <ThemedText type="subtitle" style={estilosPantallas.tituloConsejo}>Consejo</ThemedText>
+          <ThemedText type="body" style={estilosPantallas.textoConsejo}>La constancia importa más que la perfección. Marca cada logro pequeño.</ThemedText>
         </View>
       </ScrollView>
     </ThemedView>
